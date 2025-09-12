@@ -1,0 +1,15 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    volumes:
+      - split-smart-data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: split-smart 
+    ports:
+      - '5432:5432'
+
+volumes:
+  split-smart-data:
