@@ -19,7 +19,7 @@ export class CreateUserProvider {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    await this.ensureUserDoesNotExist(createUserDto.username);
+    await this.ensureUserDoesNotExist(createUserDto.email);
 
     let newUser = this.usersRepository.create({
       ...createUserDto,
