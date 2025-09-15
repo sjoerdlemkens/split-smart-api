@@ -2,6 +2,8 @@ import * as Joi from 'joi';
 
 export default Joi.object({
   JWT_SECRET: Joi.string().required(),
+  JWT_ACCESS_TOKEN_TTL: Joi.number().default(3600),
+  JWT_REFRESH_TOKEN_TTL: Joi.number().default(86400),
 
   DATABASE_PORT: Joi.number().port().default(5432),
   DATABASE_PASSWORD: Joi.string().required(),

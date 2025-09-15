@@ -1,23 +1,24 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable } from '@nestjs/common';
 import { HashingProvider } from './providers/hashing.provider';
 import { UserService } from 'src/user/user.service';
-import { JwtService } from '@nestjs/jwt';
+import { AuthTokens } from './interfaces/auth-tokens';
+import { CreateTokensProvider } from './providers/create-tokens.provider';
+import { CurrentUserData } from './interfaces/current-user-data';
+import { RefreshTokensProvider } from './providers/refresh-tokens.provider';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly jwtService: JwtService,
-
     private readonly hashingProvider: HashingProvider,
-
     private readonly userService: UserService,
+    private readonly createTokensProvider: CreateTokensProvider,
+    private readonly refreshTokensProvider: RefreshTokensProvider,
   ) {}
 
-  async validateUser(email: string, pass: string): Promise<any> {
+  async validateUser(
+    email: string,
+    pass: string,
+  ): Promise<CurrentUserData | null> {
     const user = await this.userService.findOneByEmail(email);
     const passwordMatches = await this.hashingProvider.comparePassword(
       pass,
@@ -26,14 +27,14 @@ export class AuthService {
 
     if (!passwordMatches) return null;
 
-    const { password, ...userData } = user;
-    return userData;
+    return { id: user.id, email: user.email };
   }
 
-  login(user: any) {
-    const payload = { sub: user.id, email: user.email };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+  login(user: CurrentUserData): AuthTokens {
+    return this.createTokensProvider.createTokens(user);
+  }
+
+  async refreshTokens(refreshToken: string): Promise<AuthTokens> {
+    return this.refreshTokensProvider.refreshTokens(refreshToken);
   }
 }
