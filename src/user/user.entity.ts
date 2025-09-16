@@ -17,7 +17,6 @@ export class User {
     type: 'varchar',
     length: 96,
     nullable: false,
-    select: false
   })
   @Exclude()
   password: string;
