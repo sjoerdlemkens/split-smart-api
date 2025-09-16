@@ -1,4 +1,4 @@
 export interface CurrentUserData {
-  id: number;
+  userId: number;
   email: string;
 }

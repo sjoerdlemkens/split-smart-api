@@ -13,7 +13,7 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly createTokensProvider: CreateTokensProvider,
     private readonly refreshTokensProvider: RefreshTokensProvider,
-  ) {}
+  ) { }
 
   async validateUser(
     email: string,
@@ -27,7 +27,7 @@ export class AuthService {
 
     if (!passwordMatches) return null;
 
-    return { id: user.id, email: user.email };
+    return { userId: user.id, email: user.email };
   }
 
   login(user: CurrentUserData): AuthTokens {

@@ -12,7 +12,7 @@ export class RefreshTokensProvider {
     private readonly jwtService: JwtService,
     private readonly userService: UserService,
     private readonly createTokensProvider: CreateTokensProvider,
-  ) {}
+  ) { }
 
   async refreshTokens(refreshToken: string): Promise<AuthTokens> {
     const user = await this.validateRefreshToken(refreshToken);
@@ -38,7 +38,7 @@ export class RefreshTokensProvider {
         return null;
       }
 
-      return { id: user.id, email: user.email };
+      return { userId: user.id, email: user.email };
     } catch {
       return null;
     }

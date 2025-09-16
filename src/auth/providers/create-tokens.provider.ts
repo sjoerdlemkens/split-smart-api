@@ -10,11 +10,11 @@ export class CreateTokensProvider {
   constructor(
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
-  ) {}
+  ) { }
 
   createTokens(user: CurrentUserData): AuthTokens {
     const payload: TokenPayload = {
-      sub: user.id,
+      sub: user.userId,
       email: user.email,
     };
 
