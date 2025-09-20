@@ -5,6 +5,7 @@ import { AuthTokens } from './interfaces/auth-tokens';
 import { CreateTokensProvider } from './providers/create-tokens.provider';
 import { CurrentUserData } from './interfaces/current-user-data';
 import { RefreshTokensProvider } from './providers/refresh-tokens.provider';
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -13,7 +14,7 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly createTokensProvider: CreateTokensProvider,
     private readonly refreshTokensProvider: RefreshTokensProvider,
-  ) { }
+  ) {}
 
   async validateUser(
     email: string,
@@ -36,5 +37,19 @@ export class AuthService {
 
   async refreshTokens(refreshToken: string): Promise<AuthTokens> {
     return this.refreshTokensProvider.refreshTokens(refreshToken);
+  }
+
+  async register(createUserDto: CreateUserDto): Promise<AuthTokens> {
+    // Create the user
+    const newUser = await this.userService.create(createUserDto);
+
+    // Create user data for token generation
+    const userData: CurrentUserData = {
+      userId: newUser.id,
+      email: newUser.email,
+    };
+
+    // Generate and return auth tokens
+    return this.createTokensProvider.createTokens(userData);
   }
 }
