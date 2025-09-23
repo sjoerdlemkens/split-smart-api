@@ -13,7 +13,7 @@ export class UserService {
     private readonly userRepository: Repository<User>,
     private readonly findOneByEmailProvider: FindOneByEmailProvider,
     private readonly createUserProvider: CreateUserProvider,
-  ) { }
+  ) {}
 
   create(createUserDto: CreateUserDto) {
     return this.createUserProvider.create(createUserDto);
@@ -23,9 +23,9 @@ export class UserService {
     return this.findOneByEmailProvider.findByEmail(email);
   }
 
-  public async findOneById(id: number) {
+  public async findOneById(id: string) {
     return this.userRepository.findOneBy({
-      id: id
+      id: id,
     });
   }
 }

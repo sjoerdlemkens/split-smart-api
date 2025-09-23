@@ -1,10 +1,11 @@
 import { Exclude } from 'class-transformer';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Friends } from '../friends/friends.entity';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @Column({
     type: 'varchar',
@@ -20,4 +21,10 @@ export class User {
   })
   @Exclude()
   password: string;
+
+  @OneToMany(() => Friends, (friends) => friends.user)
+  friendships: Friends[];
+
+  @OneToMany(() => Friends, (friends) => friends.friend)
+  friendOf: Friends[];
 }
