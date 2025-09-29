@@ -18,4 +18,11 @@ export class GroupsService {
     });
     return this.groupsRepository.save(group);
   }
+
+  async getGroups(userId: string) {
+    // TODO: Also includes groups that the user is a member of
+    return this.groupsRepository.find({
+      where: { ownerId: userId },
+    });
+  }
 }
