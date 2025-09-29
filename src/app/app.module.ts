@@ -9,11 +9,13 @@ import { UserModule } from 'src/user/user.module';
 import { FriendsModule } from 'src/friends/friends.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { GroupsModule } from 'src/groups/groups.module';
 
 @Module({
   imports: [
     UserModule,
     FriendsModule,
+    GroupsModule,
     ConfigModule.forRoot({
       isGlobal: true,
       load: [dbConfig],
